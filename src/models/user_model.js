@@ -3,8 +3,8 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import Bcrypt from '../utils/bcrypt';
 
 const UserSchema = mongoose.Schema({
-	userName: { type: String, unique: true},
-	fullName: { type: String},
+	username: { type: String, unique: true},
+	fullname: { type: String},
 	email: { type: String, unique: true},
   role :  { type: mongoose.Schema.ObjectId, ref: 'role'},
 	photo: { type: String },
