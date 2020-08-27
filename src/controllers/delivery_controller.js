@@ -1,17 +1,17 @@
 import CreateError from "http-errors"
-import Product from "../models/product_model";
-import ProductSchema from "../schemas/product_schema";
+import Delivery from "../models/delivery_model";
+import DeliverySchema from "../schemas/delivery_schema";
 import JsonSchemaValidator from '../utils/jsonSchemaValidator';
 
-class ProductController {
-	static async listProduct(req, res, next) {
+class DeliveryController {
+	static async listDelivery(req, res, next) {
 		 try{
             const options = {
                 page: 1,
                 limit: 10,
                 
             };
-            const Products = await  Product.paginate({}, options, function(err, result) {
+            const Deliverys = await  Delivery.paginate({}, options, function(err, result) {
                 if(err){
                     console.log("Error ", err)
                 }
@@ -39,17 +39,17 @@ class ProductController {
         }
 	}
 
-	static async createProduct(req, res, next)  {   
+	static async createDelivery(req, res, next)  {   
         const { body } = req;
         try {
-            const validator = JsonSchemaValidator.validate(body, ProductSchema.addProduct())
+            const validator = JsonSchemaValidator.validate(body, DeliverySchema.addDelivery())
             if(!validator.valid){
                 throw CreateError(400, JsonSchemaValidator.notValidate(validator.errors))
             }
             if(req.file != undefined && (req.file.filename != undefined && req.file.filename != '')){
 	          body.photo = req.file.filename;
 	        }
-            const data = await Product.create(body, function(err, result) {
+            const data = await Delivery.create(body, function(err, result) {
                 const response = {
                     "statuscode": 200,
                     "message": "Create Successfull",
@@ -66,10 +66,10 @@ class ProductController {
         }
     };
 
-    static async updateProduct(req, res, next)  {   
+    static async updateDelivery(req, res, next)  {   
         const { body } = req;
         try {
-            const validator = JsonSchemaValidator.validate(body, ProductSchema.editProduct())
+            const validator = JsonSchemaValidator.validate(body, DeliverySchema.editDelivery())
             if(!validator.valid){
                 throw CreateError(400, JsonSchemaValidator.notValidate(validator.errors))
             }
@@ -77,7 +77,7 @@ class ProductController {
 	          body.photo = req.file.filename;
 	        }
 	        const id = body._id;
-            const data = await Product.findByIdAndUpdate(id, body, function(err, result) {
+            const data = await Delivery.findByIdAndUpdate(id, body, function(err, result) {
                 const response = {
                     "statuscode": 200,
                     "message": "Update Successfull",
@@ -94,10 +94,10 @@ class ProductController {
         }
     };
 
-    static async deleteProduct(req, res, next)  {  
+    static async deleteDelivery(req, res, next)  {  
         const _id = req.params.id;
         const { body } = req;
-        const data = await Product.deleteOne({_id}, body, function(err, result) {
+        const data = await Delivery.deleteOne({_id}, body, function(err, result) {
             const response = {
                 "statuscode": 200,
                 "message": "Delete Successfull",
@@ -112,4 +112,4 @@ class ProductController {
     }
 }
 
-export default ProductController;
+export default DeliveryController;
